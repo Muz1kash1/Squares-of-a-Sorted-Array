@@ -2,9 +2,10 @@ package org.example;
 
 import java.util.Arrays;
 
+
 public class SquareSortedArrayInPlace {
   public static void main(String[] args) {
-    int[] nums = {-5, -3, 3, 4, 5};
+    int[] nums = {-9999, -7, -5, 0, 1, 5, 700, 2000};
 
     System.out.println(Arrays.toString(nums));
 
@@ -13,26 +14,30 @@ public class SquareSortedArrayInPlace {
   }
 
   /**
-   * Я не нашёл метода это решить без использования временного массива result как ты указывал в условии, точнее нашёл,
-   * но он будет работать только для отсортированного в обратном порядке и где то O(2n), так что сдаю вот так.
+   * Задачка оказалась проще если сначала написать ее на си а потом переписать на жаву на свежую голову ¯\_(ツ)_/¯ Но если
+   * никогда в жизни не касаться плюсов додуматься до решения нереально
+   *
+   * @return отсортированный массив
    */
-  public static int[] sortedSquares(int[] nums) {
+  public static int[] sortedSquares(int[] array) {
+    int rightIndex = array.length - 1;
 
-    int[] result = new int[nums.length];
-    int i = 0;
-    int temp1 = nums.length - 1;
-    int temp2 = nums.length - 1;
-
-    while (temp2 >= 0) {
-      if (Math.abs(nums[i]) > Math.abs(nums[temp1])) {
-        result[temp2--] = nums[i] * nums[i++];
+    while (rightIndex >= 0) {
+      if (Math.abs(array[rightIndex]) >= Math.abs(array[0])) {
+        array[rightIndex] *= array[rightIndex];
+        rightIndex--;
       } else {
-        result[temp2--] = nums[temp1] * nums[temp1--];
+        array[rightIndex] ^= array[0];
+        array[0] ^= array[rightIndex];
+        array[rightIndex] ^= array[0];
+
+        if (rightIndex != 1 && Math.abs(array[0]) < Math.abs(array[1])) {
+          array[0] ^= array[1];
+          array[1] ^= array[0];
+          array[0] ^= array[1];
+        }
       }
     }
-
-    return result;
+    return array;
   }
-
 }
-
